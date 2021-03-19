@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MTCNN_TFLITE</string>
+    <string name="cpu">CPU</string>
+    <string name="gpu">GPU</string>
+    <string name="dsp">DSP</string>
+    <string name="cost_time">Cost Time:</string>
+    <string name="fps">FPS:</string>
+</resources>
