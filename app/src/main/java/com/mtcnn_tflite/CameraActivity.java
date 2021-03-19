@@ -163,7 +163,7 @@ public class CameraActivity extends AppCompatActivity implements RadioGroup.OnCh
         if (!mPreview.isAvailable()) {
             mPreview.setSurfaceTextureListener(mTextureListener);
         } else {
-            startPreview();
+            openCamera();
         }
     }
 
