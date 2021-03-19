@@ -144,6 +144,7 @@ public class CameraActivity extends AppCompatActivity implements RadioGroup.OnCh
         mSurfaceHolder = surfaceView.getHolder();
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -153,13 +154,13 @@ public class CameraActivity extends AppCompatActivity implements RadioGroup.OnCh
         paintRect.setStyle(Paint.Style.STROKE);
         paintRect.setStrokeWidth(5);
         canvas = new Canvas();
+        startCameraThread();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onResume() {
         super.onResume();
-        startCameraThread();
         if (!mPreview.isAvailable()) {
             mPreview.setSurfaceTextureListener(mTextureListener);
         } else {
