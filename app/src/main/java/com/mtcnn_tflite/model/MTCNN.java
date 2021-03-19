@@ -5,7 +5,9 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.mtcnn_tflite.MainActivity;
 import com.mtcnn_tflite.utils.MyUtil;
 
 import org.tensorflow.lite.HexagonDelegate;
@@ -57,7 +59,7 @@ public class MTCNN {
         loadSuccessful = false;
     }
 
-    public synchronized void loadModel(String type) throws IOException {
+    public synchronized boolean loadModel(String type) throws IOException {
         if(pInterpreter!=null){
             pInterpreter.close();
             pInterpreter=null;
@@ -88,16 +90,26 @@ public class MTCNN {
                     dspDelegate.close();
                     dspDelegate=null;
                 }
-                gpuDelegate = new GpuDelegate();
-                options.addDelegate(gpuDelegate);
+                try {
+                    gpuDelegate = new GpuDelegate();
+                    options.addDelegate(gpuDelegate);
+                }catch (UnsupportedOperationException e){
+                    Toast.makeText(mContext, "GPU delegation is not support! Start using CPU...", Toast.LENGTH_LONG).show();
+                    return false;
+                }
                 break;
             case "dsp":
                 if(gpuDelegate!=null){
                     gpuDelegate.close();
                     gpuDelegate=null;
                 }
-                dspDelegate = new HexagonDelegate(mContext);
-                options.addDelegate(dspDelegate);
+                try {
+                    dspDelegate = new HexagonDelegate(mContext);
+                    options.addDelegate(dspDelegate);
+                }catch (UnsupportedOperationException e){
+                    Toast.makeText(mContext, "Hexagon DSP delegation is not support! Start using CPU...", Toast.LENGTH_LONG).show();
+                    return false;
+                }
                 break;
             default:
                 break;
@@ -110,6 +122,7 @@ public class MTCNN {
 
         Log.i(TAG, "Load Model Successfully");
         loadSuccessful = true;
+        return true;
     }
 
 

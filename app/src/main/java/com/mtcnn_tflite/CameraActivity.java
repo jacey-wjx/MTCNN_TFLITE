@@ -348,7 +348,10 @@ public class CameraActivity extends AppCompatActivity implements RadioGroup.OnCh
         }
 
         try {
-            mtcnn.loadModel(type);
+            boolean isSuccess = mtcnn.loadModel(type);
+            if(!isSuccess){
+                radioGroup.check(R.id.cpu);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
